@@ -88,3 +88,19 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+ul,li{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  h2{
+  font-size: 16px;
+  }
+}
+ul{
+  margin:0 30px;
+}
+</style>
