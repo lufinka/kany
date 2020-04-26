@@ -11,11 +11,12 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import item from "@/components/item";
-import { Component, Vue } from "vue-property-decorator";
-import { TD, UserInfo } from "@/types/todo";
+import item from "../components/item";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { TD, UserInfo } from "../types/todo";
 import { State, Getter, Action, Mutation } from "vuex-class";
-import { get } from "@/tool";
+import { get } from "../tool";
+
 @Component({
   name: "home",
   components: {
@@ -23,8 +24,8 @@ import { get } from "@/tool";
   }
 })
 export default class Home extends Vue {
-  userInfo: UserInfo = get("USER_INFO");
   newTodo: string = "";
+  userInfo: UserInfo = get("USER_INFO");
   day: Date = new Date().formatDate("yyyy-MM-dd");
   @State("todo") public todo!: [];
   @State("is") public is!: true;
@@ -40,17 +41,18 @@ export default class Home extends Vue {
     this.$http
       .get("http://localhost:7001/queryTodo", {
         params: {
-          userId: this.userInfo.id,
+          user_id: this.userInfo.id || "",
           day: this.day
         }
       })
       .then((res: any) => {
-        this.$message({
-          message: res.data.msg,
-          type: res.data.code == 200 ? "success" : "warning"
-        });
         if (res.data.code == 200) {
           this.setList(res.data.data);
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: "warning"
+          });
         }
       });
   }
@@ -60,31 +62,29 @@ export default class Home extends Vue {
         user_id: this.userInfo.id,
         day: this.day,
         desc: this.newTodo,
-        computed: false
+        computed: 0
       };
       this.$http
-        .get("http://localhost:7001/addOneTodo", {
-          params: todoItem
-        })
+        .post("http://localhost:7001/addOneTodo", todoItem)
         .then((res: any) => {
           this.$message({
             message: res.data.msg,
             type: res.data.code == 200 ? "success" : "warning"
           });
           if (res.data.code == 200) {
-            this.newTodo = ""
+            this.newTodo = "";
             this.addTodo(todoItem);
           }
         });
-    }else{
+    } else {
       this.$message({
-            message: "请输入代办事项",
-            type: "warning"
-          });
+        message: "请输入代办事项",
+        type: "warning"
+      });
     }
   }
   created() {
-    !this.todo.length && this.queryList();
+    this.queryList();
   }
 }
 </script>

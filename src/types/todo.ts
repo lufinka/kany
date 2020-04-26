@@ -1,6 +1,8 @@
 export interface TD {
-  text: string;
-  ok: boolean;
+  desc: string;
+  computed: number;
+  day: string;
+  user_id: string;
 }
 export interface UserInfo {
   name: string;

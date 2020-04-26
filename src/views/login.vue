@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { set } from "@/tool";
+import { set } from "../tool";
 
 export interface User {
   name: string;
