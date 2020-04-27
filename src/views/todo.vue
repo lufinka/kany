@@ -2,8 +2,8 @@
   <div style="width:900px;margin:0 auto">
     <el-input placeholder="请输入内容" v-model="newTodo" @keyup.enter.native="addOne" prefix-icon="el-icon-arrow-down" class="input-with-select"></el-input>
     <ul>
-      <li v-for="(v,i) in todo" :key="i">
-        <item :data="v" :index="i" @say="say"></item>
+      <li v-for="(v,i) in getterTodo" :key="i">
+        <item :data="v" :index="i"></item>
       </li>
     </ul>
   </div>
@@ -24,42 +24,25 @@ import { get } from "../tool";
   }
 })
 export default class Home extends Vue {
-  newTodo: string = "";
-  userInfo: UserInfo = get("USER_INFO");
-  day: Date = new Date().formatDate("yyyy-MM-dd");
-  @State("todo") public todo!: [];
-  @State("is") public is!: true;
-  @Mutation("queryTodo") setList!: (v: any) => void;
+  public newTodo: string = "";
+  public day: Date = new Date().formatDate('yyyy-MM-dd');
+  public userInfo: UserInfo = get("USER_INFO");
+  @State('todo') public getterTodo!: [];
+  @State("id") public id!: '';
+  // @Mutation("queryTodo") setList!: (v: any) => void;
   @Mutation("addTodo") addTodo!: (v: any) => void;
-  say(p: string): void {
-    console.log("say", p);
-  }
-  get count() {
-    return this.todo.length;
-  }
-  public queryList(): void {
-    this.$http
-      .get("http://localhost:7001/queryTodo", {
-        params: {
-          user_id: this.userInfo.id || "",
-          day: this.day
-        }
-      })
-      .then((res: any) => {
-        if (res.data.code == 200) {
-          this.setList(res.data.data);
-        } else {
-          this.$message({
-            message: res.data.msg,
-            type: "warning"
-          });
-        }
-      });
-  }
+  @Action("setTodo") setTodo!: (obj:any) => void;
+  // say(p: string): void {
+  //   console.log("say", p);
+  // }
+  // get count() {
+  //   return this.todo.length;
+  // }
+
   public addOne(): void {
     if (this.newTodo) {
       let todoItem = {
-        user_id: this.userInfo.id,
+        user_id: this.id,
         day: this.day,
         desc: this.newTodo,
         computed: 0
@@ -83,8 +66,8 @@ export default class Home extends Vue {
       });
     }
   }
-  created() {
-    this.queryList();
+  mounted() {
+    // !this.getterTodo.length && this.setTodo({vm:this,id:this.id});
   }
 }
 </script>

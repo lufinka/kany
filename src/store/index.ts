@@ -8,6 +8,9 @@ interface List {
   is: boolean;
   id: string;
 }
+
+const day: Date = new Date().formatDate('yyyy-MM-dd');
+
 export default new Vuex.Store<List>({
   state: {
     todo: [],
@@ -15,8 +18,24 @@ export default new Vuex.Store<List>({
     id: '',
   },
   mutations: {
-    queryTodo(state, arr) {
-      state.todo = arr;
+    queryTodo(state, vm: any) {
+      vm.vm.$http
+        .get('http://localhost:7001/queryTodo', {
+          params: {
+            user_id: vm.id,
+            day,
+          },
+        })
+        .then((res: any) => {
+          if (res.data.code === 200) {
+            state.todo = res.data.data;
+          } else {
+            vm.vm.$message({
+              message: res.data.msg,
+              type: 'warning',
+            });
+          }
+        });
     },
     setUserId(state, str) {
       state.id = str;
@@ -26,6 +45,13 @@ export default new Vuex.Store<List>({
     },
   },
   actions: {
+    setId({ commit }, obj: any) {
+      commit('setUserId', obj.id);
+      commit('queryTodo', obj, obj.id);
+    },
+    setTodo({ commit }, obj: any) {
+      commit('queryTodo', obj, obj.id);
+    },
   },
   modules: {
   },

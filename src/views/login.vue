@@ -16,7 +16,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { set } from "../tool";
+// import { set } from "../tool";
+import {  Action } from "vuex-class";
 
 export interface User {
   name: string;
@@ -24,6 +25,7 @@ export interface User {
 }
 @Component({})
 export default class Home extends Vue {
+  @Action('setId') setId!: (obj:any) => void;
   form: User = { name: "", password: "" };
   public login(): void {
     this.$http
@@ -34,7 +36,8 @@ export default class Home extends Vue {
           type: res.data.code == 200 ? "success" : "warning"
         });
         if (res.data.code == "200") {
-          set("USER_INFO", res.data.data);
+          // set("USER_INFO", res.data.data);
+          this.setId({vm:this,id:res.data.data.id})
         }
       });
   }
