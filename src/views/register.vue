@@ -1,25 +1,30 @@
 <template>
-  <div style="width:900px;margin:0 auto">
-    <el-form ref="form" :rules="rules" :model="form" label-suffix="：" label-width="120px">
-      <el-form-item label="用户名" prop="name">
-        <el-input v-model="form.name"></el-input>
-      </el-form-item>
-      <el-form-item label="昵称" prop="nick">
-        <el-input v-model="form.nick"></el-input>
-      </el-form-item>
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model="form.phone"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="form.password"></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="surePassword">
-        <el-input type="password" v-model="form.surePassword"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="register">注册</el-button>
-      </el-form-item>
-    </el-form>
+  <div class="register">
+    <div class="cont">
+      <div class="title">账号注册</div>
+      <el-divider></el-divider>
+      <el-form ref="form" :rules="rules" :model="form" label-suffix="：">
+        <el-form-item prop="name">
+          <el-input v-model="form.name" placeholder="用户名" prefix-icon="el-icon-user"></el-input>
+        </el-form-item>
+        <el-form-item prop="nick">
+          <el-input v-model="form.nick" placeholder="昵称" prefix-icon="el-icon-user"></el-input>
+        </el-form-item>
+        <el-form-item prop="phone">
+          <el-input v-model="form.phone" placeholder="手机号" prefix-icon="el-icon-mobile-phone"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input type="password" v-model="form.password" placeholder="密码" prefix-icon="el-icon-lock"></el-input>
+        </el-form-item>
+        <el-form-item prop="surePassword">
+          <el-input type="password" v-model="form.surePassword" placeholder="确认密码" prefix-icon="el-icon-lock"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="register">注册</el-button>
+          <router-link to="/login">返回登录</router-link>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -96,3 +101,28 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.register {
+  .title {
+    font-size: 18px;
+    margin-bottom: -20px;
+    line-height: 34px;
+  }
+  background-color: dodgerblue;
+  overflow: hidden;
+  height: 100%;
+  .cont {
+    padding: 40px;
+    width: 460px;
+    margin: 10% auto 0;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 2px solid #eee;
+    a {
+      text-decoration: none;
+      margin-left: 20px;
+    }
+  }
+}
+</style>

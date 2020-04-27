@@ -1,12 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/login">login</router-link>|
-      <router-link to="/register">register</router-link>|
-      <router-link to="/todo">todo</router-link>
-    </div>
     <router-view />
   </div>
 </template>
@@ -16,7 +9,10 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  // text-align: center;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   color: #2c3e50;
 }
 #nav {

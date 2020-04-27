@@ -26,8 +26,8 @@ export default class Item extends Vue {
   public computedOne(): void {
     this.$http
       .post('http://localhost:7001/switchStatus', {
-          id: this.mirror.id,
-          computed: !!this.mirror.computed ? 0 : 1,
+        id: this.mirror.id,
+        computed: !!this.mirror.computed ? 0 : 1,
       })
       .then((res: any) => {
         if (res.data.code === 200) {
@@ -46,7 +46,8 @@ export default class Item extends Vue {
     // <button on-click={this.increment}>{this.ky}</button>
     // <button>{this.num}</button></h2>;
     return <div on-click={this.computedOne}>
-      <p style={!!this.mirror.computed && { textDecoration: 'line-through', color: '#c0c4cc' }}>{this.mirror.desc}</p>
+      <p style={!!this.mirror.computed ? { textDecoration: 'line-through', color: '#c0c4cc', marginBottom: '-10px' } : { marginBottom: '-10px' }}>
+        {this.mirror.desc}</p>
       <el-divider></el-divider>
     </div>;
   }

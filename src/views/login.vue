@@ -1,23 +1,28 @@
 <template>
-  <div style="width:900px;margin:0 auto">
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="用户名">
-        <el-input v-model="form.name"></el-input>
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input type="password" v-model="form.password"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="login">登录</el-button>
-      </el-form-item>
-    </el-form>
+  <div class="login">
+    <div class="cont">
+      <div class="title">账号登录</div>
+      <el-divider></el-divider>
+      <el-form ref="form" :model="form" label-suffix="：">
+        <el-form-item>
+          <el-input v-model="form.name" placeholder="用户名" prefix-icon="el-icon-user"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input type="password" placeholder="密码" v-model="form.password" prefix-icon="el-icon-lock"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="login">登录</el-button>
+          <router-link to="/register">立即注册</router-link>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { set } from "../tool";
-import {  Action } from "vuex-class";
+import { Action } from "vuex-class";
 
 export interface User {
   name: string;
@@ -25,7 +30,7 @@ export interface User {
 }
 @Component({})
 export default class Home extends Vue {
-  @Action('setId') setId!: (obj:any) => void;
+  @Action("setId") setId!: (obj: any) => void;
   form: User = { name: "", password: "" };
   public login(): void {
     this.$http
@@ -37,9 +42,35 @@ export default class Home extends Vue {
         });
         if (res.data.code == "200") {
           set("USER_INFO", res.data.data);
-          this.setId({vm:this,id:res.data.data.id})
+          this.setId({ vm: this, id: res.data.data.id });
+          this.$router.push({ name: "Todo" });
         }
       });
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.login {
+  .title {
+    font-size: 18px;
+    margin-bottom: -20px;
+    line-height: 34px;
+  }
+  background-color: dodgerblue;
+  overflow: hidden;
+  height: 100%;
+  .cont {
+    padding: 40px;
+    width: 460px;
+    margin: 10% auto 0;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 2px solid #eee;
+    a {
+      text-decoration: none;
+      margin-left: 20px;
+    }
+  }
+}
+</style>
