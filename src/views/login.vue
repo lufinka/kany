@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-// import { set } from "../tool";
+import { set } from "../tool";
 import {  Action } from "vuex-class";
 
 export interface User {
@@ -36,7 +36,7 @@ export default class Home extends Vue {
           type: res.data.code == 200 ? "success" : "warning"
         });
         if (res.data.code == "200") {
-          // set("USER_INFO", res.data.data);
+          set("USER_INFO", res.data.data);
           this.setId({vm:this,id:res.data.data.id})
         }
       });

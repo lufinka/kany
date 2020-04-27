@@ -42,7 +42,7 @@ export default class Home extends Vue {
   public addOne(): void {
     if (this.newTodo) {
       let todoItem = {
-        user_id: this.id,
+        user_id: this.id || this.userInfo.id,
         day: this.day,
         desc: this.newTodo,
         computed: 0
@@ -67,7 +67,7 @@ export default class Home extends Vue {
     }
   }
   mounted() {
-    // !this.getterTodo.length && this.setTodo({vm:this,id:this.id});
+    !this.getterTodo.length && this.setTodo({vm:this,id:this.id || this.userInfo.id});
   }
 }
 </script>
