@@ -78,14 +78,7 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-input__inner {
-  border: none;
-  border-bottom: 1px solid #DCDFE6;
-  font-size: 16px;
-  height: 50px;
-  line-height: 50px;
-}
-.main{
+.main {
   padding-top: 6%;
 }
 .level {
@@ -108,8 +101,16 @@ export default class Home extends Vue {
   width: 600px;
   box-shadow: 0 15px 25px rgba($color: #000000, $alpha: 0.2);
   margin: 0 auto 0;
+  padding-bottom: 20px;
   border: 1px solid #eee;
   border-top: none;
+  ::v-deep .el-input__inner {
+    border: none;
+    border-bottom: 1px solid #dcdfe6;
+    font-size: 16px;
+    height: 50px;
+    line-height: 50px;
+  }
   ul,
   li {
     list-style: none;
@@ -123,6 +124,21 @@ export default class Home extends Vue {
   }
   ul {
     margin: 0 30px;
+  }
+  .item {
+    ::v-deep p{
+      margin: 0;
+      height: 48px;
+      line-height: 48px;
+    }
+    ::v-deep .el-divider{
+      margin: 0;
+    }
+    ::v-deep .el-input__inner {
+      border: none;
+      height: 48px;
+      line-height: 48px;
+    }
   }
 }
 </style>

@@ -1,11 +1,10 @@
 
 import { Component, Vue, Prop, Emit, Watch } from 'vue-property-decorator';
 import { TD } from '../types/todo.js';
-
 @Component
 export default class Item extends Vue {
-  // public num: number = 0;
-  // public num2: number = 0;
+  public count: number = 0;
+  public show: boolean = false;
   @Prop(Object) public data !: TD;
   @Prop(Number) public index !: number;
   public mirror: TD = JSON.parse(JSON.stringify(this.data));
@@ -23,7 +22,19 @@ export default class Item extends Vue {
   // public increment() {
   //   this.num++;
   // }
-  public computedOne(): void {
+  public computedOne(e): void {
+    e.preventDefault();
+    this.count += 1;
+    setTimeout(() => {
+      if (this.count === 1) {
+        this.switchStatus();
+      } else if (this.count === 2) {
+        this.show = true;
+      }
+      this.count = 0;
+    }, 300);
+  }
+  public switchStatus(): void {
     this.$http
       .post('http://localhost:7001/switchStatus', {
         id: this.mirror.id,
@@ -40,14 +51,19 @@ export default class Item extends Vue {
         }
       });
   }
+  public updateDesc(): void {
+    this.show = false;
+  }
   public render() {
     // return <h2>{this.data.desc}
     // <button on-click={this.save}>点击</button>
     // <button on-click={this.increment}>{this.ky}</button>
     // <button>{this.num}</button></h2>;
-    return <div on-click={this.computedOne}>
-      <p style={!!this.mirror.computed ? { textDecoration: 'line-through', color: '#c0c4cc', marginBottom: '-10px' } : { marginBottom: '-10px' }}>
+    return <div class='item'>
+      <p v-show={!this.show}  on-click={this.computedOne}
+        style={!!this.mirror.computed && { textDecoration: 'line-through', color: '#c0c4cc'}}>
         {this.mirror.desc}</p>
+      <el-input v-show={this.show} clearable={true} v-model={this.mirror.desc} on-blur={this.updateDesc}></el-input>
       <el-divider></el-divider>
     </div>;
   }
