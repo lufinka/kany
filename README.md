@@ -1,7 +1,7 @@
 # 一个TODOList项目
-![pic1](/assets/微信截图_20200428153011.png)
-![pic2](/assets/微信截图_20200428153026.png)
-![pic3](/assets/微信截图_20200428153240.png)
+![pic1](/src/assets/微信截图_20200428153011.png)
+![pic2](/src/assets/微信截图_20200428153026.png)
+![pic3](/src/assets/微信截图_20200428153240.png)
 ## Project setup
 ```
 yarn install
