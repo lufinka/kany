@@ -30,9 +30,12 @@ export default class Item extends Vue {
         this.switchStatus();
       } else if (this.count === 2) {
         this.show = true;
+        this.$nextTick(() => {
+          this.$refs.input.focus();
+        });
       }
       this.count = 0;
-    }, 300);
+    }, 500);
   }
   public switchStatus(): void {
     this.$http
@@ -53,6 +56,23 @@ export default class Item extends Vue {
   }
   public updateDesc(): void {
     this.show = false;
+    if (this.mirror.desc !== this.data.desc) {
+      this.$http
+        .post('http://localhost:7001/switchStatus', {
+          id: this.mirror.id,
+          desc: this.mirror.desc,
+        })
+        .then((res: any) => {
+          if (res.data.code === 200) {
+            this.data.desc = this.mirror.desc;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning',
+            });
+          }
+        });
+    }
   }
   public render() {
     // return <h2>{this.data.desc}
@@ -60,10 +80,11 @@ export default class Item extends Vue {
     // <button on-click={this.increment}>{this.ky}</button>
     // <button>{this.num}</button></h2>;
     return <div class='item'>
-      <p v-show={!this.show}  on-click={this.computedOne}
-        style={!!this.mirror.computed && { textDecoration: 'line-through', color: '#c0c4cc'}}>
-        {this.mirror.desc}</p>
-      <el-input v-show={this.show} clearable={true} v-model={this.mirror.desc} on-blur={this.updateDesc}></el-input>
+      <p v-show={!this.show} on-click={this.computedOne} style={!!this.mirror.computed && { textDecoration: 'line-through', color: '#c0c4cc' }}>
+        {this.mirror.desc}
+      </p>
+      <el-input ref='input' v-show={this.show} clearable={true} v-model={this.mirror.desc}
+        on-blur={this.updateDesc}></el-input>
       <el-divider></el-divider>
     </div>;
   }

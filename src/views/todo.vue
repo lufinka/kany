@@ -126,17 +126,21 @@ export default class Home extends Vue {
     margin: 0 30px;
   }
   .item {
-    ::v-deep p{
+    ::v-deep p {
       margin: 0;
       height: 48px;
       line-height: 48px;
+      user-select: none;
+      font-size: 16px;
     }
-    ::v-deep .el-divider{
+    ::v-deep .el-divider {
       margin: 0;
     }
     ::v-deep .el-input__inner {
       border: none;
+      padding-left: 0;
       height: 48px;
+      font-size: 16px;
       line-height: 48px;
     }
   }
