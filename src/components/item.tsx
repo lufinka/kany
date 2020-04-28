@@ -35,7 +35,7 @@ export default class Item extends Vue {
         });
       }
       this.count = 0;
-    }, 500);
+    }, 300);
   }
   public switchStatus(): void {
     this.$http
@@ -57,21 +57,29 @@ export default class Item extends Vue {
   public updateDesc(): void {
     this.show = false;
     if (this.mirror.desc !== this.data.desc) {
-      this.$http
-        .post('http://localhost:7001/switchStatus', {
-          id: this.mirror.id,
-          desc: this.mirror.desc,
-        })
-        .then((res: any) => {
-          if (res.data.code === 200) {
-            this.data.desc = this.mirror.desc;
-          } else {
-            this.$message({
-              message: res.data.msg,
-              type: 'warning',
-            });
-          }
+      if (!this.mirror.desc) {
+        this.mirror.desc = this.data.desc;
+        this.$message({
+          message: '不能为空！',
+          type: 'warning',
         });
+      } else {
+        this.$http
+          .post('http://localhost:7001/switchStatus', {
+            id: this.mirror.id,
+            desc: this.mirror.desc,
+          })
+          .then((res: any) => {
+            if (res.data.code === 200) {
+              this.data.desc = this.mirror.desc;
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning',
+              });
+            }
+          });
+      }
     }
   }
   public render() {
@@ -86,6 +94,6 @@ export default class Item extends Vue {
       <el-input ref='input' v-show={this.show} clearable={true} v-model={this.mirror.desc}
         on-blur={this.updateDesc}></el-input>
       <el-divider></el-divider>
-    </div>;
+    </div> ;
   }
 }

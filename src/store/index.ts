@@ -7,6 +7,7 @@ interface List {
   todo: TD[];
   is: boolean;
   id: string;
+  total: number;
 }
 
 const day: Date = new Date().formatDate('yyyy-MM-dd');
@@ -16,26 +17,20 @@ export default new Vuex.Store<List>({
     todo: [],
     is: true,
     id: '',
+    total: 1,
   },
   mutations: {
-    queryTodo(state, vm: any) {
-      vm.vm.$http
-        .get('http://localhost:7001/queryTodo', {
-          params: {
-            user_id: vm.id,
-            day,
-          },
-        })
-        .then((res: any) => {
-          if (res.data.code === 200) {
-            state.todo = res.data.data;
-          } else {
-            vm.vm.$message({
-              message: res.data.msg,
-              type: 'warning',
-            });
-          }
-        });
+    async queryTodo(state, vm: any) {
+      const res = await vm.vm.$http.get('http://localhost:7001/queryTodo', {
+        params: {
+          user_id: vm.id,
+          day,
+          offset: vm.offset || 0,
+        },
+      });
+      await (state.todo = []);
+      await (state.total = res.data.total);
+      await (state.todo.push(...res.data.data));
     },
     setUserId(state, str) {
       state.id = str;
@@ -44,13 +39,24 @@ export default new Vuex.Store<List>({
       state.todo.push(newTodo);
     },
   },
+  getters: {
+    todo(state) {
+      return state.todo;
+    },
+    id(state) {
+      return state.id;
+    },
+    total(state) {
+      return state.total;
+    },
+  },
   actions: {
     setId({ commit }, obj: any) {
       commit('setUserId', obj.id);
-      commit('queryTodo', obj, obj.id);
+      commit('queryTodo', obj);
     },
     setTodo({ commit }, obj: any) {
-      commit('queryTodo', obj, obj.id);
+      commit('queryTodo', obj);
     },
   },
   modules: {
